@@ -53,6 +53,7 @@ runs:
         IMAGE_NAME: zoobdude/alpine-chrome:${{ inputs.tag }}
       run: |
         ${{ inputs.folder }}/test.sh
+      shell: bash
 
     - name: Compute versioned tag
       id: tag
@@ -87,6 +88,7 @@ runs:
           TAG=${TAG}-${CURRENT_SELENOID_VERSION:14:4}
         fi
         echo "value=${TAG}" >> $GITHUB_OUTPUT
+      shell: bash
 
 
     - name: Login to GitHub Container registry
