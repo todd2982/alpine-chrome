@@ -43,7 +43,7 @@ runs:
     - name: Build Docker image
       uses: docker/build-push-action@v5
       with:
-        context: ${{ inputs.folder }}
+        context: ${{ inputs.tag }}
         load: true
         labels: ${{ steps.meta.outputs.labels }}
         tags: zoobdude/alpine-chrome:${{ inputs.tag }}
@@ -52,7 +52,11 @@ runs:
       env:
         IMAGE_NAME: zoobdude/alpine-chrome:${{ inputs.tag }}
       run: |
-        ${{ inputs.folder }}/test.sh
+        if [[ "${{ inputs.tag }}" == "latest" ]]; then
+          ./test.sh
+        else
+          ${{ inputs.tag }}/test.sh
+        fi
       shell: bash
 
     - name: Compute versioned tag
