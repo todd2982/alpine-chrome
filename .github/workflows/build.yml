@@ -45,7 +45,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Build layer one images
-        uses: ./.github/actions/build-single-container/action.yml
+        uses: ./.github/actions/build-single-container
         with:
           tag: ${{ matrix.tag }}
           base: ${{ matrix.base }}
@@ -70,7 +70,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Build layer two images
-        uses: ./.github/actions/build-single-container/action.yml
+        uses: ./.github/actions/build-single-container
         with:
           tag: ${{ matrix.tag }}
           parent: ${{ matrix.base }}
