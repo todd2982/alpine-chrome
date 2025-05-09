@@ -2,9 +2,9 @@
 
 name: build
 on:
-  push:
-    branches:
-      - master
+  #push:
+   # branches:
+    #  - master
   pull_request:
   schedule:
     - cron: '25 4 * * 4'
