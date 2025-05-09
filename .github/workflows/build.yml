@@ -61,10 +61,6 @@ jobs:
     strategy:
       matrix:
         tag: [with-playwright, with-puppeteer, with-selenoid]
-        include:
-          - base: with-node
-          - tag: with-selenoid
-            base: with-chromedriver
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -72,5 +68,4 @@ jobs:
         uses: ./.github/actions/build-single-container
         with:
           tag: ${{ matrix.tag }}
-          parent: ${{ matrix.base }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
