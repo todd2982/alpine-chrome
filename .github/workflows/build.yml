@@ -25,7 +25,6 @@ jobs:
       - name: Build base container
         uses: ./.github/actions/build-single-container
         with:
-          folder: .
           tag: latest
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
