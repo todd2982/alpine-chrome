@@ -1,4 +1,4 @@
-FROM zenika/alpine-chrome
+FROM ghcr.io/zoobdude/alpine-chrome
 
 USER root
 RUN apk add --no-cache tini deno
