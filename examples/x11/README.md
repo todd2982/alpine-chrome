@@ -1,4 +1,4 @@
-# zenika/alpine-chrome with X11
+# zoobdude/alpine-chrome with X11
 
 We are very familiar with running CLI processes in Docker containers with no Graphical UI at all.
 Here is an example using zenika/alpine-chrome with a X11 server
