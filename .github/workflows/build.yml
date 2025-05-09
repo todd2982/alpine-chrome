@@ -20,7 +20,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build base container
         uses: ./.github/actions/build-single-container
@@ -42,7 +42,7 @@ jobs:
         base: [latest]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build layer one images
         uses: ./.github/actions/build-single-container
         with:
@@ -63,7 +63,7 @@ jobs:
         tag: [with-playwright, with-puppeteer, with-selenoid]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build layer two images
         uses: ./.github/actions/build-single-container
         with:
