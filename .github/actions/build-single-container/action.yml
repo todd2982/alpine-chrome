@@ -46,8 +46,8 @@ runs:
         images: alpine-chrome
         tags: type=raw,value=${{ inputs.tag }}
         labels: |
-          org.opencontainers.image.documentation=https://github.com/Zoobdude/alpine-chrome/blob/master/README.md
-          org.opencontainers.image.vendor=Zoobdude
+          org.opencontainers.image.documentation=https://github.com/todd2982/alpine-chrome/blob/master/README.md
+          org.opencontainers.image.vendor=todd2982
 
     - name: Build Docker image
       uses: docker/build-push-action@v5
@@ -55,11 +55,11 @@ runs:
         context: ${{ env.folder }}
         load: true
         labels: ${{ steps.meta.outputs.labels }}
-        tags: zoobdude/alpine-chrome:${{ inputs.tag }}
+        tags: todd2982/alpine-chrome:${{ inputs.tag }}
 
     - name: Test
       env:
-        IMAGE_NAME: zoobdude/alpine-chrome:${{ inputs.tag }}
+        IMAGE_NAME: todd2982/alpine-chrome:${{ inputs.tag }}
       run: |
         ${{ env.folder }}/test.sh
       shell: bash
@@ -67,7 +67,7 @@ runs:
     - name: Compute versioned tag
       id: tag
       env:
-        IMAGE_NAME: zoobdude/alpine-chrome:${{ inputs.tag }}
+        IMAGE_NAME: todd2982/alpine-chrome:${{ inputs.tag }}
         CHROMIUM_VERSION_REGEXP: 'Chromium ([0-9]+)\.'
         CHROMEDRIVER_VERSION_REGEXP: 'ChromeDriver ([0-9]+)\.'
       run: |
@@ -125,8 +125,8 @@ runs:
         platforms: linux/amd64,linux/arm64
         labels: ${{ steps.meta.outputs.labels }}
         tags: |
-          ghcr.io/zoobdude/${{ env.IMAGE_NAME }}
-          ghcr.io/zoobdude/${{ env.IMAGE_VERSIONED_NAME }}
+          ghcr.io/todd2982/${{ env.IMAGE_NAME }}
+          ghcr.io/todd2982/${{ env.IMAGE_VERSIONED_NAME }}
         push: true
         cache-from: type=gha
         cache-to: type=gha
