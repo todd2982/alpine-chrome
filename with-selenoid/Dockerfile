@@ -1,5 +1,5 @@
 FROM aerokube/selenoid:latest-release as selenoid
-FROM ghcr.io/zoobdude/alpine-chrome:with-chromedriver
+FROM ghcr.io/todd2982/alpine-chrome:with-chromedriver
 
 USER root
 RUN apk add --no-cache ca-certificates tzdata mailcap

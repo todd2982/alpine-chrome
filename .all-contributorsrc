@@ -9,7 +9,7 @@
       "login": "jlandure",
       "name": "Julien Landuré",
       "avatar_url": "https://avatars2.githubusercontent.com/u/525974?v=4",
-      "profile": "https://blog.zenika.com/author/jlandure/",
+      "profile": "https://blog.todd2982.com/author/jlandure/",
       "contributions": [
         "code",
         "review",
@@ -375,7 +375,7 @@
   ],
   "contributorsPerLine": 7,
   "projectName": "alpine-chrome",
-  "projectOwner": "Zenika",
+  "projectOwner": "todd2982",
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true

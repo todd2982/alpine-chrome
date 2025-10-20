@@ -5,7 +5,7 @@ about: Tell us how you use alpine-chrome & support our efforts in maintaining it
 
 # ❤️ I'm using Alpine-Chrome
 
-If you (or your company) are using this image `zenika/alpine-chrome` - please let us know. We'd love to hear from you!
+If you (or your company) are using this image `todd2982/alpine-chrome` - please let us know. We'd love to hear from you!
 
 Alpine-Chrome is a community driven project, which means it's not maintained by a company. If you would like to help us - any of the following is greatly appreciated.
 

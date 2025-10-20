@@ -1,10 +1,10 @@
 {
-  "name": "zenika-alpinechrome-withpuppeteer",
+  "name": "todd2982-alpinechrome-withpuppeteer",
   "version": "1.0.0",
   "description": "Alpine chrome with puppeteer",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zenika/alpine-chrome.git"
+    "url": "git+https://github.com/todd2982/alpine-chrome.git"
   },
   "author": "jlandure",
   "license": "MIT",

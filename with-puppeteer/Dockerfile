@@ -1,4 +1,4 @@
-FROM ghcr.io/zoobdude/alpine-chrome:with-node
+FROM ghcr.io/todd2982/alpine-chrome:with-node
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD 1
 ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium-browser

@@ -1,7 +1,7 @@
-# zoobdude/alpine-chrome with X11
+# todd2982/alpine-chrome with X11
 
 We are very familiar with running CLI processes in Docker containers with no Graphical UI at all.
-Here is an example using zenika/alpine-chrome with a X11 server
+Here is an example using todd2982/alpine-chrome with a X11 server
 
 # On MacOS
 
@@ -34,7 +34,7 @@ One important thing to note is that after you have installed this is to log out 
 ## Launch
 
 ```
-docker container run --rm -it -e DISPLAY=host.docker.internal:0 --cap-add=SYS_ADMIN --entrypoint "" zenika/alpine-chrome:with-webgl chromium-browser --disable-dev-shm-usage
+docker container run --rm -it -e DISPLAY=host.docker.internal:0 --cap-add=SYS_ADMIN --entrypoint "" todd2982/alpine-chrome:with-webgl chromium-browser --disable-dev-shm-usage
 ```
 
 ## Testing with xeyes

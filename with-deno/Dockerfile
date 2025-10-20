@@ -1,4 +1,4 @@
-FROM ghcr.io/zoobdude/alpine-chrome
+FROM ghcr.io/todd2982/alpine-chrome
 
 USER root
 RUN apk add --no-cache tini deno

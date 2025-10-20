@@ -20,14 +20,14 @@ spec:
         - --remote-debugging-port=9222
         - --headless
         - --disable-gpu
-        image: ghcr.io/zoobdude/alpine-chrome
+        image: ghcr.io/todd2982/alpine-chrome
         livenessProbe:
           httpGet:
             path: /json
             port: 9222
           initialDelaySeconds: 10
           timeoutSeconds: 10
-        name: zoobdude-alpine-chrome
+        name: todd2982-alpine-chrome
         readinessProbe:
           httpGet:
             path: /json

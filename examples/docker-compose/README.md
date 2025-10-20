@@ -1,6 +1,6 @@
-# zoobdude/alpine-chrome with docker-compose
+# todd2982/alpine-chrome with docker-compose
 
-Here is an example with docker-compose on how to launch and use `zoobdude/alpine-chrome` calling a `nginx` page in another container.
+Here is an example with docker-compose on how to launch and use `todd2982/alpine-chrome` calling a `nginx` page in another container.
 
 ## Launch
 
@@ -35,7 +35,7 @@ nginx_1   | 172.18.0.3 - - [06/May/2020:20:41:16 +0000] "GET / HTTP/1.1" 200 612
 
 ## Configuration
 
-You may change the `zoobdude/alpine-chrome` image you want to use modifying the line 10 in `docker-compose.yml`.
+You may change the `todd2982/alpine-chrome` image you want to use modifying the line 10 in `docker-compose.yml`.
 
 ## References
 
