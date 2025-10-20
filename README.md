@@ -1,4 +1,4 @@
-[![GitHub Stars](https://img.shields.io/github/stars/Zoobdude/alpine-chrome)](https://github.com/Zoobdude/alpine-chrome/) [![Docker Build Status](https://img.shields.io/github/actions/workflow/status/zoobdude/alpine-chrome/build.yml)](https://github.com/Zoobdude/alpine-chrome/actions/workflows/build.yml)
+[![GitHub Stars](https://img.shields.io/github/stars/todd2982/alpine-chrome)](https://github.com/todd2982/alpine-chrome/) [![Docker Build Status](https://img.shields.io/github/actions/workflow/status/todd2982/alpine-chrome/build.yml)](https://github.com/todd2982/alpine-chrome/actions/workflows/build.yml)
 
 
 # alpine-chrome (fork)
@@ -11,18 +11,18 @@ This repository simply continues regular builds of the original project (with mo
 ****
 
 # Available registries
-- On [GitHub Container registry](https://github.com/Zoobdude/alpine-chrome/pkgs/container/alpine-chrome): `ghcr.io/zoobdude/alpine-chrome`
+- On [GitHub Container registry](https://github.com/todd2982/alpine-chrome/pkgs/container/alpine-chrome): `ghcr.io/todd2982/alpine-chrome`
 
 Currently the image is only on GHCR, if you have another registry that you would like me to push to, please create an issue.
 
 # Supported tags and respective `Dockerfile` links
 
-- `latest`, `100` [(Dockerfile)](https://github.com/zoobdude/alpine-chrome/blob/master/Dockerfile)
-- `with-node`, `100-with-node`, `100-with-node-16` [(Dockerfile)](https://github.com/zoobdude/alpine-chrome/blob/master/with-node/Dockerfile)
-- `with-puppeteer`, `100-with-puppeteer` [(Dockerfile)](https://github.com/zoobdude/alpine-chrome/blob/master/with-puppeteer/Dockerfile)
-- `with-playwright`, `100-with-playwright` [(Dockerfile)](https://github.com/zoobdude/alpine-chrome/blob/master/with-playwright/Dockerfile)
-- `with-selenoid`, `100-with-selenoid` [(Dockerfile)](https://github.com/zoobdude/alpine-chrome/blob/master/with-selenoid/Dockerfile)
-- `with-chromedriver`, `100-with-chromedriver` [(Dockerfile)](https://github.com/zoobdude/alpine-chrome/blob/master/with-chromedriver/Dockerfile)
+- `latest`, `100` [(Dockerfile)](https://github.com/todd2982/alpine-chrome/blob/master/Dockerfile)
+- `with-node`, `100-with-node`, `100-with-node-16` [(Dockerfile)](https://github.com/todd2982/alpine-chrome/blob/master/with-node/Dockerfile)
+- `with-puppeteer`, `100-with-puppeteer` [(Dockerfile)](https://github.com/todd2982/alpine-chrome/blob/master/with-puppeteer/Dockerfile)
+- `with-playwright`, `100-with-playwright` [(Dockerfile)](https://github.com/todd2982/alpine-chrome/blob/master/with-playwright/Dockerfile)
+- `with-selenoid`, `100-with-selenoid` [(Dockerfile)](https://github.com/todd2982/alpine-chrome/blob/master/with-selenoid/Dockerfile)
+- `with-chromedriver`, `100-with-chromedriver` [(Dockerfile)](https://github.com/todd2982/alpine-chrome/blob/master/with-chromedriver/Dockerfile)
 - `89`, `86`, `85`, `84`, `83`, `81`, `80`, `77`, `76`, `73`, `72`, `71`, `68`, `64`
 - `89-with-node`, `86-with-node`, `85-with-node`, `84-with-node`, `83-with-node`, `81-with-node`, `80-with-node`, `77-with-node`, `76-with-node`
 - `89-with-puppeteer`, `86-with-puppeteer`, `85-with-puppeteer`,`84-with-puppeteer`, `83-with-puppeteer`, `81-with-puppeteer`, `80-with-puppeteer`, `77-with-puppeteer`, `76-with-puppeteer`
@@ -35,23 +35,23 @@ In the world of webdev, the ability to run quickly end-to-end tests are importan
 
 ## 💡 Crafting the perfect container
 
-- 📦 Tiniest Headless Chrome (Compressed size: [423 MB](https://github.com/zoobdude/alpine-chrome#image-disk-size))
+- 📦 Tiniest Headless Chrome (Compressed size: [423 MB](https://github.com/todd2982/alpine-chrome#image-disk-size))
 - 🐳 Easy to use, ephemeral and reproducible Headless Chrome with Docker
 - 📝 Doc-friendly with examples for printing the DOM, generating an image with a mobile ratio or generating a PDF.
 - 👷‍♂️ Autobuild with Github Actions to sync the project and ship the images with confidence
 - 📌 Up-to-date latest Chromium and tags available to test different versions of Chromium
-- 🔐 Secure with the best way to use Chrome and Docker - [See "3 ways to securely use Chrome Headless"](https://github.com/zoobdude/alpine-chrome#3-ways-to-securely-use-chrome-headless-with-this-image) section
-- 🌐 Ready for internationalisation use: support for asian characters - [See "screenshot-asia.js" file](https://github.com/zoobdude/alpine-chrome/blob/master/with-puppeteer/src/screenshot-asia.js)
-- 💄 Ready for design use: support for WebGL, support for emojis- See ["How to use with WebGL" section](https://github.com/zoobdude/alpine-chrome#how-to-use-with-webgl) and ["Emojis are not rendered properly" section](https://github.com/zoobdude/alpine-chrome/issues/114)
+- 🔐 Secure with the best way to use Chrome and Docker - [See "3 ways to securely use Chrome Headless"](https://github.com/todd2982/alpine-chrome#3-ways-to-securely-use-chrome-headless-with-this-image) section
+- 🌐 Ready for internationalisation use: support for asian characters - [See "screenshot-asia.js" file](https://github.com/todd2982/alpine-chrome/blob/master/with-puppeteer/src/screenshot-asia.js)
+- 💄 Ready for design use: support for WebGL, support for emojis- See ["How to use with WebGL" section](https://github.com/todd2982/alpine-chrome#how-to-use-with-webgl) and ["Emojis are not rendered properly" section](https://github.com/todd2982/alpine-chrome/issues/114)
 - 📄 Open Source with an Apache2 licence
-- 👥 Community-built with external contributors - [See "✨ Contributors" section](https://github.com/zoobdude/alpine-chrome#-contributors)
-- 💚 Dev-friendly with examples using NodeJS, Puppeteer, docker-compose and also a test with a X11 display - [See "Run examples" section](https://github.com/zoobdude/alpine-chrome#run-examples)
+- 👥 Community-built with external contributors - [See "✨ Contributors" section](https://github.com/todd2982/alpine-chrome#-contributors)
+- 💚 Dev-friendly with examples using NodeJS, Puppeteer, docker-compose and also a test with a X11 display - [See "Run examples" section](https://github.com/todd2982/alpine-chrome#run-examples)
 
 # 3 ways to securely use Chrome Headless with this image
 
 ## ❌ With nothing
 
-Launching the container using only `docker container run -it ghcr.io/zoobdude/alpine-chrome ...` will fail with some logs similar to [#33](https://github.com/zoobdude/alpine-chrome/issues/33).
+Launching the container using only `docker container run -it ghcr.io/todd2982/alpine-chrome ...` will fail with some logs similar to [#33](https://github.com/todd2982/alpine-chrome/issues/33).
 
 Please use the 3 others ways to use Chrome Headless.
 
@@ -59,7 +59,7 @@ Please use the 3 others ways to use Chrome Headless.
 
 Launch the container using:
 
-`docker container run -it --rm ghcr.io/zoobdude/alpine-chrome` and use the `--no-sandbox` flag for all your commands.
+`docker container run -it --rm ghcr.io/todd2982/alpine-chrome` and use the `--no-sandbox` flag for all your commands.
 
 Be careful to know the website you're calling.
 
@@ -68,7 +68,7 @@ Explanation for the `no-sandbox` flag in a [quick introduction here](https://www
 ## ✅ With `SYS_ADMIN` capability
 
 Launch the container using:
-`docker container run -it --rm --cap-add=SYS_ADMIN ghcr.io/zoobdude/alpine-chrome`
+`docker container run -it --rm --cap-add=SYS_ADMIN ghcr.io/todd2982/alpine-chrome`
 
 This allows to run Chrome with sandboxing but needs unnecessary privileges from a Docker point of view.
 
@@ -76,12 +76,12 @@ This allows to run Chrome with sandboxing but needs unnecessary privileges from 
 
 Thanks to ever-awesome Jessie Frazelle seccomp profile for Chrome. This is The most secure way to run this Headless Chrome docker image.
 
-[chrome.json](https://github.com/zoobdude/alpine-chrome/blob/master/chrome.json)
+[chrome.json](https://github.com/todd2982/alpine-chrome/blob/master/chrome.json)
 
 Also available here `wget https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json`
 
 Launch the container using:
-`docker container run -it --rm --security-opt seccomp=$(pwd)/chrome.json ghcr.io/zoobdude/alpine-chrome`
+`docker container run -it --rm --security-opt seccomp=$(pwd)/chrome.json ghcr.io/todd2982/alpine-chrome`
 
 # How to use in command line
 
@@ -89,13 +89,13 @@ Launch the container using:
 
 The default entrypoint runs `chromium-browser --headless` with some common flags from `CHROMIUM_FLAGS` set in the [`Dockerfile`](./Dockerfile).
 
-You can change the `CHROMIUM_FLAGS` by overriding the environment variable using: `docker container run -it --rm --env CHROMIUM_FLAGS="--other-flag ..." ghcr.io/zoobdude/alpine-chrome chromium-browser ...`
+You can change the `CHROMIUM_FLAGS` by overriding the environment variable using: `docker container run -it --rm --env CHROMIUM_FLAGS="--other-flag ..." ghcr.io/todd2982/alpine-chrome chromium-browser ...`
 
-You can get full control by overriding the entrypoint using: `docker container run -it --rm --entrypoint "" ghcr.io/zoobdude/alpine-chrome chromium-browser ...`
+You can get full control by overriding the entrypoint using: `docker container run -it --rm --entrypoint "" ghcr.io/todd2982/alpine-chrome chromium-browser ...`
 
 ## Use the devtools
 
-Command (with no-sandbox): `docker container run -d -p 9222:9222 ghcr.io/zoobdude/alpine-chrome --no-sandbox --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 https://www.chromestatus.com/`
+Command (with no-sandbox): `docker container run -d -p 9222:9222 ghcr.io/todd2982/alpine-chrome --no-sandbox --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 https://www.chromestatus.com/`
 
 Open your browser to: `http://localhost:9222` and then click on the tab you want to inspect. Replace the beginning
 `https://chrome-devtools-frontend.appspot.com/serve_file/@.../inspector.html?ws=localhost:9222/[END]`
@@ -104,40 +104,40 @@ by
 
 ## Print the DOM
 
-Command (with no-sandbox): `docker container run -it --rm ghcr.io/zoobdude/alpine-chrome --no-sandbox --dump-dom https://www.chromestatus.com/`
+Command (with no-sandbox): `docker container run -it --rm ghcr.io/todd2982/alpine-chrome --no-sandbox --dump-dom https://www.chromestatus.com/`
 
 ## Print a PDF
 
-Command (with no-sandbox): `docker container run -it --rm -v $(pwd):/usr/src/app ghcr.io/zoobdude/alpine-chrome --no-sandbox --print-to-pdf --hide-scrollbars https://www.chromestatus.com/`
+Command (with no-sandbox): `docker container run -it --rm -v $(pwd):/usr/src/app ghcr.io/todd2982/alpine-chrome --no-sandbox --print-to-pdf --hide-scrollbars https://www.chromestatus.com/`
 
 ## Take a screenshot
 
-Command (with no-sandbox): `docker container run -it --rm -v $(pwd):/usr/src/app ghcr.io/zoobdude/alpine-chrome --no-sandbox --screenshot --hide-scrollbars https://www.chromestatus.com/`
+Command (with no-sandbox): `docker container run -it --rm -v $(pwd):/usr/src/app ghcr.io/todd2982/alpine-chrome --no-sandbox --screenshot --hide-scrollbars https://www.chromestatus.com/`
 
 ### Size of a standard letterhead.
 
-Command (with no-sandbox): `docker container run -it --rm -v $(pwd):/usr/src/app ghcr.io/zoobdude/alpine-chrome --no-sandbox --screenshot --hide-scrollbars --window-size=1280,1696 https://www.chromestatus.com/`
+Command (with no-sandbox): `docker container run -it --rm -v $(pwd):/usr/src/app ghcr.io/todd2982/alpine-chrome --no-sandbox --screenshot --hide-scrollbars --window-size=1280,1696 https://www.chromestatus.com/`
 
 ### Nexus 5x
 
-Command (with no-sandbox): `docker container run -it --rm -v $(pwd):/usr/src/app ghcr.io/zoobdude/alpine-chrome --no-sandbox --screenshot --hide-scrollbars --window-size=412,732 https://www.chromestatus.com/`
+Command (with no-sandbox): `docker container run -it --rm -v $(pwd):/usr/src/app ghcr.io/todd2982/alpine-chrome --no-sandbox --screenshot --hide-scrollbars --window-size=412,732 https://www.chromestatus.com/`
 
 ### Screenshot owned by current user (by default the file is owned by the container user)
 
-Command (with no-sandbox): `` docker container run -u `id -u $USER` -it --rm -v $(pwd):/usr/src/app ghcr.io/zoobdude/alpine-chrome --no-sandbox --screenshot --hide-scrollbars --window-size=412,732 https://www.chromestatus.com/ ``
+Command (with no-sandbox): `` docker container run -u `id -u $USER` -it --rm -v $(pwd):/usr/src/app ghcr.io/todd2982/alpine-chrome --no-sandbox --screenshot --hide-scrollbars --window-size=412,732 https://www.chromestatus.com/ ``
 
 # How to use with Deno
 
 Go the deno `src` folder. Build your image using this command:
 
 ```shell
-docker image build -t ghcr.io/zoobdude/alpine-chrome:with-deno-sample .
+docker image build -t ghcr.io/todd2982/alpine-chrome:with-deno-sample .
 ```
 
 Then launch the container:
 
 ```shell
-docker container run -it --rm ghcr.io/zoobdude/alpine-chrome:with-deno-sample
+docker container run -it --rm ghcr.io/todd2982/alpine-chrome:with-deno-sample
  Download https://deno.land/std/examples/welcome.ts
  Warning Implicitly using master branch https://deno.land/std/examples/welcome.ts
  Compile https://deno.land/std/examples/welcome.ts
@@ -147,7 +147,7 @@ docker container run -it --rm ghcr.io/zoobdude/alpine-chrome:with-deno-sample
 With your own file, use this command:
 
 ```shell
-docker container run -it --rm -v $(pwd):/usr/src/app ghcr.io/zoobdude/alpine-chrome:with-deno-sample run helloworld.ts
+docker container run -it --rm -v $(pwd):/usr/src/app ghcr.io/todd2982/alpine-chrome:with-deno-sample run helloworld.ts
 Compile file:///usr/src/app/helloworld.ts
 Download https://deno.land/std/fmt/colors.ts
 Warning Implicitly using master branch https://deno.land/std/fmt/colors.ts
@@ -165,13 +165,13 @@ See the [`with-puppeteer`](./with-puppeteer) folder for more details. We have to
 If you have a NodeJS/Puppeteer script in your `src` folder named `pdf.js`, you can launch it using the following command:
 
 ```shell
-docker container run -it --rm -v $(pwd)/src:/usr/src/app/src --cap-add=SYS_ADMIN ghcr.io/zoobdude/alpine-chrome:with-puppeteer node src/pdf.js
+docker container run -it --rm -v $(pwd)/src:/usr/src/app/src --cap-add=SYS_ADMIN ghcr.io/todd2982/alpine-chrome:with-puppeteer node src/pdf.js
 ```
 
 With the ["font-wqy-zenhei"](https://pkgs.alpinelinux.org/package/edge/community/x86/font-wqy-zenhei) library, you could also manipulate asian pages like in [`with-puppeteer/test/screenshot-asia.js`](./with-puppeteer/test/screenshot-asia.js)
 
 ```shell
-docker container run -it --rm -v $(pwd)/with-puppeteer/test:/usr/src/app/test --cap-add=SYS_ADMIN ghcr.io/zoobdude/alpine-chrome:with-puppeteer node test/screenshot-asia.js
+docker container run -it --rm -v $(pwd)/with-puppeteer/test:/usr/src/app/test --cap-add=SYS_ADMIN ghcr.io/todd2982/alpine-chrome:with-puppeteer node test/screenshot-asia.js
 ```
 
 These websites are tested with the following supported languages:
@@ -189,7 +189,7 @@ See the [`with-puppeteer-xvfb`](./with-puppeteer-xvfb) folder for more details. 
 Assuming you have a NodeJS/Puppeteer script in your `src` folder named `extension.js`, and the [unpacked extension](./with-puppeteer-xvfb/test/chrome-extension/) in the `src/chrome-extension` folder, you can launch it using the following command:
 
 ```shell
-docker container run -it --rm -v $(pwd)/src:/usr/src/app/src --cap-add=SYS_ADMIN ghcr.io/zoobdude/alpine-chrome:with-puppeteer-xvfb node src/extension.js
+docker container run -it --rm -v $(pwd)/src:/usr/src/app/src --cap-add=SYS_ADMIN ghcr.io/todd2982/alpine-chrome:with-puppeteer-xvfb node src/extension.js
 ```
 
 The extension provided will change the page background in red for every website visited. This test `test/test.js` will load the extension and take a screenshot of the https://example.com website.
@@ -201,7 +201,7 @@ Like ["Puppeteer"](https://pptr.dev/#?product=Puppeteer&version=v6.0.0&show=api-
 Go to the [`with-playwright`](./with-playwright) folder and launch the following command:
 
 ```shell
-docker container run -it --rm -v $(pwd)/test:/usr/src/app/test --cap-add=SYS_ADMIN ghcr.io/zoobdude/alpine-chrome:with-playwright node test/test.js
+docker container run -it --rm -v $(pwd)/test:/usr/src/app/test --cap-add=SYS_ADMIN ghcr.io/todd2982/alpine-chrome:with-playwright node test/test.js
 ```
 
 An `example.png` file will be created in the [`with-playwright/test`](./with-playwright/test) folder.
@@ -212,9 +212,9 @@ By default, this image works with WebGL.
 
 If you want to disable it, make sure to add `--disable-gpu` when launching Chromium.
 
-`docker container run -it --rm --cap-add=SYS_ADMIN -v $(pwd):/usr/src/app ghcr.io/zoobdude/alpine-chrome --screenshot --hide-scrollbars https://webglfundamentals.org/webgl/webgl-fundamentals.html`
+`docker container run -it --rm --cap-add=SYS_ADMIN -v $(pwd):/usr/src/app ghcr.io/todd2982/alpine-chrome --screenshot --hide-scrollbars https://webglfundamentals.org/webgl/webgl-fundamentals.html`
 
-`docker container run -it --rm --cap-add=SYS_ADMIN -v $(pwd):/usr/src/app ghcr.io/zoobdude/alpine-chrome --screenshot --hide-scrollbars https://browserleaks.com/webgl`
+`docker container run -it --rm --cap-add=SYS_ADMIN -v $(pwd):/usr/src/app ghcr.io/todd2982/alpine-chrome --screenshot --hide-scrollbars https://browserleaks.com/webgl`
 
 # How to use with Chromedriver
 
@@ -230,7 +230,7 @@ Even if it used to run browsers in docker containers, it can be quite useful as 
 You can run it with following command:
 
 ```shell
-docker container run -it --rm --cap-add=SYS_ADMIN  -p 4444:4444 ghcr.io/zoobdude/alpine-chrome:with-selenoid -capture-driver-logs
+docker container run -it --rm --cap-add=SYS_ADMIN  -p 4444:4444 ghcr.io/todd2982/alpine-chrome:with-selenoid -capture-driver-logs
 ```
 
 And run your tests against `http://localhost:4444/wd/hub`
@@ -246,16 +246,16 @@ See more [selenoid docs](https://aerokube.com/selenoid/latest/#_using_selenoid_w
 We can run the container as root with this command:
 
 ```shell
-docker container run --rm -it --entrypoint "" --user root ghcr.io/zoobdude/alpine-chrome sh
+docker container run --rm -it --entrypoint "" --user root ghcr.io/todd2982/alpine-chrome sh
 ```
 
 # Run examples
 
 Some examples are available on the `examples` [directory](examples):
 
-- 🐳 [docker-compose](https://github.com/Zoobdude/alpine-chrome/tree/master/examples/docker-compose) to launch a chrome calling a nginx server in the same docker-compose
-- ☸️ [kubernetes](https://github.com/Zoobdude/alpine-chrome/tree/master/examples/k8s) to launch a pod with a headless chrome
-- 🖥 [x11](https://github.com/Zoobdude/alpine-chrome/blob/master/examples/x11) to experiment this image with a X11 server.
+- 🐳 [docker-compose](https://github.com/todd2982/alpine-chrome/tree/master/examples/docker-compose) to launch a chrome calling a nginx server in the same docker-compose
+- ☸️ [kubernetes](https://github.com/todd2982/alpine-chrome/tree/master/examples/k8s) to launch a pod with a headless chrome
+- 🖥 [x11](https://github.com/todd2982/alpine-chrome/blob/master/examples/x11) to experiment this image with a X11 server.
 
 # References
 
@@ -263,29 +263,29 @@ Some examples are available on the `examples` [directory](examples):
 
 - List of all options of the "Chromium" command line: https://peter.sh/experiments/chromium-command-line-switches/
 
-- Where to file issues: https://github.com/zoobdude/alpine-chrome/issues
+- Where to file issues: https://github.com/todd2982/alpine-chrome/issues
 
-- Maintained by: https://www.zenika.com
+- Maintained by: https://www.todd2982.com
 
 # Versions (in latest)
 
 ## Alpine version
 
 ```shell
-docker container run -it --rm --entrypoint "" ghcr.io/zoobdude/alpine-chrome cat /etc/alpine-release
+docker container run -it --rm --entrypoint "" ghcr.io/todd2982/alpine-chrome cat /etc/alpine-release
 # 3.19.1
 ```
 
 ## Chrome version
 
 ```shell
-docker container run -it --rm --entrypoint "" ghcr.io/zoobdude/alpine-chrome chromium-browser --version
+docker container run -it --rm --entrypoint "" ghcr.io/todd2982/alpine-chrome chromium-browser --version
 # Chromium 121.0.6167.85 Alpine Linux
 ```
 
 ## Image disk size
 
 ```shell
-docker image inspect ghcr.io/zoobdude/alpine-chrome --format='{{.Size}}'
+docker image inspect ghcr.io/todd2982/alpine-chrome --format='{{.Size}}'
 # 663644797 # 633 MB
 ```

@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-IMAGE_NAME=${IMAGE_NAME:-zenika/alpine-chrome:with-chromedriver}
+IMAGE_NAME=${IMAGE_NAME:-todd2982/alpine-chrome:with-chromedriver}
 export IMAGE_NAME
 
 DIR=$(cd $(dirname $0) && pwd)

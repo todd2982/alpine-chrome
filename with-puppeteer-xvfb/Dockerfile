@@ -1,4 +1,4 @@
-FROM ghcr.io/zoobdude/alpine-chrome:with-puppeteer
+FROM ghcr.io/todd2982/alpine-chrome:with-puppeteer
 
 USER 0
 RUN apk add --no-cache xvfb
