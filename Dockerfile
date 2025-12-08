@@ -3,6 +3,12 @@ FROM alpine:3.22
 # Installs latest Chromium package.
 RUN apk upgrade --no-cache --available \
     && apk add --no-cache \
+      gcompat \
+      glib \
+      nss \
+      libxcb \
+      libgcc \
+      chromium \
       chromium-swiftshader \
       ttf-freefont \
       font-noto-emoji \
