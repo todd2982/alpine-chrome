@@ -26,7 +26,8 @@ RUN mkdir -p /usr/src/app \
 USER chrome
 WORKDIR /usr/src/app
 
-ENV CHROME_BIN=/usr/bin/chromium-browser \
+ENV HOME=/tmp \
+    CHROME_BIN=/usr/bin/chromium-browser \
     CHROME_PATH=/usr/lib/chromium/
 
 # Autorun chrome headless
