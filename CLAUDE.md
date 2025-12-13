@@ -4,170 +4,138 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-alpine-chrome is a Docker image project that provides headless Chromium browser running on Alpine Linux. This is a maintained fork of the original jlandure/alpine-chrome project, continuing regular builds with updated Chrome versions.
+Alpine-chrome is a Docker image project that provides Chromium browser running in headless mode on a minimal Alpine Linux base. This is a maintained fork that continues regular builds with up-to-date Chrome versions. The project supports multiple image variants with different capabilities (Node.js, Puppeteer, Playwright, ChromeDriver, Selenoid, Deno).
 
-**Registry**: Images are published to GitHub Container Registry at `ghcr.io/todd2982/alpine-chrome`
+## Image Architecture
 
-## Repository Structure
+The project uses a **layered build approach**:
 
-The repository follows a layered Docker image architecture:
+1. **Base image** (`Dockerfile` in root): Alpine Linux + Chromium + fonts
+2. **Layer 1 images**: Built FROM base
+   - `with-node`: Adds Node.js, npm, yarn, build tools
+   - `with-deno`: Adds Deno runtime
+   - `with-chromedriver`: Adds ChromeDriver
+3. **Layer 2 images**: Built FROM layer 1 (typically with-node)
+   - `with-puppeteer`: Node + Puppeteer (FROM with-node)
+   - `with-playwright`: Node + Playwright (FROM with-node)
+   - `with-selenoid`: Selenium server implementation (FROM with-node)
+   - `with-puppeteer-xvfb`: Puppeteer + Xvfb for Chrome extension testing
 
-1. **Base image** (`./Dockerfile`): Core Alpine + Chromium setup
-2. **Layer one images** (`with-node/`, `with-deno/`, `with-chromedriver/`): Add runtime environments
-3. **Layer two images** (`with-puppeteer/`, `with-playwright/`, `with-selenoid/`): Add automation frameworks
+**Important**: When modifying Dockerfiles, understand the dependency chain. Changes to the base image affect all downstream images. Layer 2 images depend on their respective layer 1 parents.
 
-Each variant directory contains:
-- `Dockerfile` - Image definition
-- `test.sh` - Validation script that runs during build
+## Build and Test Commands
 
-## Build System
+### Building Images
 
-### GitHub Actions Workflow
-
-The build process (`.github/workflows/build.yml`) orchestrates image builds:
-
-- **Trigger**: Weekly on Thursdays at 4:25 AM UTC, on PRs, and manual dispatch
-- **Build order**: base → layer-one-images → layer-two-images
-- **Platforms**: linux/amd64, linux/arm64
-- **Testing**: Each image is tested before pushing
-- **Tagging**: Images are tagged with both variant names (`with-node`) and version numbers (e.g., `100-with-node`)
-
-### Custom Build Action
-
-The `.github/actions/build-single-container/action.yml` handles individual image builds:
-
-1. Sets folder based on tag (`latest` → `.`, others → folder name)
-2. Builds image with `docker` driver
-3. Runs `test.sh` in the variant directory
-4. Extracts Chromium version and creates versioned tags
-5. Pushes to GHCR (only on master branch)
-
-### Building Images Locally
+The project uses GitHub Actions for automated builds. To build locally:
 
 ```bash
 # Build base image
-docker build -t todd2982/alpine-chrome .
+docker build -t todd2982/alpine-chrome:latest .
 
-# Build variant (e.g., with-node)
+# Build variant images (from their respective directories)
 docker build -t todd2982/alpine-chrome:with-node with-node/
-
-# Run tests for base image
-IMAGE_NAME=todd2982/alpine-chrome ./test.sh
-
-# Run tests for variant
-IMAGE_NAME=todd2982/alpine-chrome:with-node with-node/test.sh
+docker build -t todd2982/alpine-chrome:with-puppeteer with-puppeteer/
 ```
+
+### Testing Images
+
+Each image variant has its own test script in its directory:
+
+```bash
+# Test base image
+./test.sh
+
+# Test variant images (sets IMAGE_NAME env var and runs tests)
+cd with-puppeteer && ./test.sh
+cd with-playwright && ./test.sh
+cd with-chromedriver && ./test.sh
+```
+
+**Test Pattern**: All variant test scripts follow the same pattern:
+1. Set `IMAGE_NAME` environment variable
+2. Call parent `../test.sh` for basic tests
+3. Run variant-specific tests (if any)
+
+### GitHub Actions Workflow
+
+The build workflow (`.github/workflows/build.yml`) has three jobs that run sequentially:
+1. `build-base`: Builds the base image
+2. `layer-one-images`: Builds with-node, with-deno, with-chromedriver (needs build-base)
+3. `layer-two-images`: Builds with-playwright, with-puppeteer, with-selenoid (needs layer-one-images)
+
+Each job uses the reusable action `.github/actions/build-single-container/action.yml` which:
+- Builds the image
+- Runs tests
+- Extracts Chrome/ChromeDriver version for tagging
+- Pushes to ghcr.io (only on master branch)
 
 ## Security Considerations
 
-Chrome sandboxing requires one of three approaches when running containers:
+Chrome sandboxing requires special configuration. There are three approaches (documented in README):
 
-1. **`--no-sandbox` flag**: Simplest but least secure, use only with trusted sites
-2. **`--cap-add=SYS_ADMIN`**: Enables sandboxing but grants broad privileges
-3. **seccomp profile** (recommended): Use `chrome.json` with `--security-opt seccomp=$(pwd)/chrome.json`
+1. **Best (seccomp)**: Use `--security-opt seccomp=./chrome.json`
+2. **Good (SYS_ADMIN)**: Use `--cap-add=SYS_ADMIN`
+3. **Acceptable (no-sandbox)**: Use `--no-sandbox` flag
 
-The `chrome.json` file is a comprehensive seccomp profile from Jessie Frazelle's dotfiles.
+The `chrome.json` file contains a seccomp profile that allows Chrome to run securely without requiring SYS_ADMIN capabilities.
 
-## Key Docker Image Details
+**When writing examples or tests**: Prefer `--cap-add=SYS_ADMIN` over `--no-sandbox` for better security in documentation.
 
-### Base Image Configuration
+## Important Environment Variables
 
-- **Base OS**: Alpine Linux (currently 3.23)
-- **User**: Runs as non-root `chrome` user
-- **Working directory**: `/usr/src/app`
-- **Entrypoint**: `chromium-browser --headless` with flags from `CHROMIUM_FLAGS`
-- **Environment**:
-  - `HOME=/tmp` - Required for Chromium setup
-  - `CHROME_BIN=/usr/bin/chromium-browser`
-  - `CHROME_PATH=/usr/lib/chromium/`
-  - `CHROMIUM_FLAGS="--disable-software-rasterizer --disable-dev-shm-usage"`
+### Base Image
+- `HOME=/tmp`: Required for Chromium to function properly
+- `CHROME_BIN=/usr/bin/chromium-browser`: Path to Chrome binary
+- `CHROME_PATH=/usr/lib/chromium/`: Chrome library path
+- `CHROMIUM_FLAGS="--disable-software-rasterizer --disable-dev-shm-usage"`: Default flags
 
-### Font Support
+### Puppeteer Images
+- `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1`: Don't download Chrome (use system)
+- `PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser`: Use Alpine's Chrome
 
-- Base fonts: `ttf-freefont`
-- Emoji support: `font-noto-emoji`
-- Asian character support: `font-wqy-zenhei` (from edge/community repo)
-- Configuration: `local.conf` sets up font fallback for emoji rendering
+### Playwright Images
+- `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`: Don't download browsers
+- `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium-browser`: Use Alpine's Chrome
 
-### Image Variants
+## Key Files
 
-- **with-node**: Adds Node.js, npm, yarn, build tools (gcc, g++, python3, git, make)
-- **with-puppeteer**: Extends with-node, adds Puppeteer (skips Chromium download, uses system Chromium)
-- **with-playwright**: Extends with-node, adds Playwright (skips browser download, uses system Chromium)
-- **with-chromedriver**: Adds chromium-chromedriver, exposes port 9515
-- **with-selenoid**: Selenium server with Chrome and chromedriver
-- **with-deno**: Adds Deno runtime
-- **with-puppeteer-xvfb**: Puppeteer with Xvfb for Chrome extension testing
+- `chrome.json`: Seccomp security profile for Chrome (from Jessie Frazelle)
+- `local.conf`: Font configuration for proper emoji and international character rendering
+- `.github/actions/build-single-container/action.yml`: Reusable build/test/push action
+- Each `test.sh`: Validates the respective image works correctly
 
-## Testing
+## Internationalization Support
 
-All variants must pass their respective `test.sh` script:
-- Base test checks Alpine version and Chromium version
-- Variant tests may include additional checks specific to their tooling
+The base image includes `font-wqy-zenhei` (from Alpine edge/community) for Asian character support. Test scripts verify rendering for:
+- Chinese (Baidu)
+- Japanese (Yahoo Japan)
+- Korean (Naver)
 
-## Important Environment Variables for Variants
+## Common Development Patterns
 
-When building automation images:
-- `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1` - Prevents Puppeteer from downloading its own Chromium
-- `PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser` - Points to system Chromium
-- `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` - Prevents Playwright from downloading browsers
-- `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium-browser` - Points to system Chromium
+### Adding a New Image Variant
 
-## Common Commands
+1. Create new directory: `with-{variant}/`
+2. Add `Dockerfile` (typically FROM an existing image)
+3. Add `test.sh` script that sources `../test.sh` and adds variant tests
+4. Update `.github/workflows/build.yml` to include in appropriate layer
+5. Update README.md with new tag and usage examples
 
-### Run Chromium Commands
+### Version Updates
 
-```bash
-# Print DOM
-docker run --rm ghcr.io/todd2982/alpine-chrome --no-sandbox --dump-dom https://example.com
+Version tags are automatically extracted by GitHub Actions from:
+- Chromium: `chromium-browser --version` output (regex: `Chromium ([0-9]+)\.`)
+- ChromeDriver: `chromedriver --version` output (regex: `ChromeDriver ([0-9]+)\.`)
 
-# Generate PDF
-docker run --rm -v $(pwd):/usr/src/app ghcr.io/todd2982/alpine-chrome --no-sandbox --print-to-pdf https://example.com
+The workflow ensures Chromium and ChromeDriver major versions match for with-chromedriver builds.
 
-# Take screenshot
-docker run --rm -v $(pwd):/usr/src/app ghcr.io/todd2982/alpine-chrome --no-sandbox --screenshot https://example.com
+## Registry
 
-# Run with devtools
-docker run -d -p 9222:9222 ghcr.io/todd2982/alpine-chrome --no-sandbox --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 https://example.com
-```
+Images are published to GitHub Container Registry (ghcr.io):
+- `ghcr.io/todd2982/alpine-chrome:latest`
+- `ghcr.io/todd2982/alpine-chrome:{version}`
+- `ghcr.io/todd2982/alpine-chrome:with-{variant}`
+- `ghcr.io/todd2982/alpine-chrome:{version}-with-{variant}`
 
-### Run with Automation Frameworks
-
-```bash
-# Puppeteer
-docker run --rm -v $(pwd)/src:/usr/src/app/src --cap-add=SYS_ADMIN ghcr.io/todd2982/alpine-chrome:with-puppeteer node src/script.js
-
-# Playwright
-docker run --rm -v $(pwd)/test:/usr/src/app/test --cap-add=SYS_ADMIN ghcr.io/todd2982/alpine-chrome:with-playwright node test/test.js
-
-# Selenoid
-docker run --rm --cap-add=SYS_ADMIN -p 4444:4444 ghcr.io/todd2982/alpine-chrome:with-selenoid
-```
-
-### Override Defaults
-
-```bash
-# Override CHROMIUM_FLAGS
-docker run --rm --env CHROMIUM_FLAGS="--other-flag" ghcr.io/todd2982/alpine-chrome
-
-# Override entrypoint completely
-docker run --rm --entrypoint "" ghcr.io/todd2982/alpine-chrome chromium-browser --version
-
-# Run as root
-docker run --rm --entrypoint "" --user root ghcr.io/todd2982/alpine-chrome sh
-```
-
-## Version Management
-
-- Chromium version is auto-detected during builds and used for tagging
-- Tags follow pattern: `{chromium-major-version}` for base, `{chromium-major-version}-{variant}` for variants
-- The `latest` tag and variant tags (e.g., `with-node`) always point to most recent build
-
-## Adding New Variants
-
-To add a new variant:
-1. Create a new directory `with-{name}/`
-2. Add a `Dockerfile` that builds from `ghcr.io/todd2982/alpine-chrome` or a layer-one variant
-3. Add a `test.sh` script that validates the image
-4. Update `.github/workflows/build.yml` to include the variant in the appropriate layer
-5. Document usage in `README.md`
+Builds only push to registry on master branch.
