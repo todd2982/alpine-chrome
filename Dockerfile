@@ -1,11 +1,11 @@
 FROM alpine:3.23
 
-# Installs latest Chromium package.
+# Installs Chromium and a minimal set of dependencies.
 # A Python CDP proxy (cdp-proxy.py) is used to expose 0.0.0.0:9222 -> 127.0.0.1:9223
-# because modern Chromium (v112+) removed support for --remote-debugging-address and
-# always binds DevTools to 127.0.0.1, making it unreachable from other Docker containers.
-# The proxy also rewrites WebSocket URLs in /json* responses so CDP clients receive
-# usable addresses instead of the internal 127.0.0.1:9223 addresses.
+# because Chromium v112+ removed --remote-debugging-address and always binds DevTools
+# to 127.0.0.1, making it unreachable from other Docker containers.
+# The proxy rewrites WebSocket URLs in /json* responses so CDP clients (e.g. Karakeep)
+# receive usable addresses instead of the internal 127.0.0.1:9223 addresses.
 RUN apk upgrade --no-cache --available \
     && apk add --no-cache \
       gcompat \
@@ -14,16 +14,10 @@ RUN apk upgrade --no-cache --available \
       libxcb \
       libgcc \
       chromium \
-      chromium-swiftshader \
       ttf-freefont \
-      font-noto-emoji \
       python3 \
-      wget \
-    && apk add --no-cache \
-      --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
-      font-wqy-zenhei
+      wget
 
-COPY local.conf /etc/fonts/local.conf
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 COPY cdp-proxy.py /usr/local/bin/cdp-proxy.py
 
@@ -33,6 +27,7 @@ RUN mkdir -p /usr/src/app \
     && chown -R chrome:chrome /usr/src/app \
     && chmod +x /usr/local/bin/docker-entrypoint.sh \
     && chmod +x /usr/local/bin/cdp-proxy.py
+
 # Run Chrome as non-privileged
 USER chrome
 WORKDIR /usr/src/app
