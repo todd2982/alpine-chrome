@@ -46,4 +46,4 @@ ENV HOME=/tmp \
 ENV CHROMIUM_FLAGS="--disable-software-rasterizer --disable-dev-shm-usage"
 EXPOSE 9222
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["--headless", "--disable-gpu", "--disable-dev-shm-usage", "--hide-scrollbars"]
+CMD ["--headless", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage", "--hide-scrollbars"]
