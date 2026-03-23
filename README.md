@@ -87,15 +87,35 @@ Launch the container using:
 
 ## Default entrypoint
 
-The default entrypoint runs `chromium-browser --headless` with some common flags from `CHROMIUM_FLAGS` set in the [`Dockerfile`](./Dockerfile).
+The default entrypoint (`docker-entrypoint.sh`) manages Chrome's remote debugging so it's accessible from other containers:
 
-You can change the `CHROMIUM_FLAGS` by overriding the environment variable using: `docker container run -it --rm --env CHROMIUM_FLAGS="--other-flag ..." ghcr.io/todd2982/alpine-chrome chromium-browser ...`
+1. Starts Chromium on `127.0.0.1:9223` (internal)
+2. Runs a CDP proxy on `0.0.0.0:9222` (external) that:
+   - Rewrites WebSocket URLs in `/json` and `/json/version` responses so CDP clients receive usable addresses
+   - Transparently proxies WebSocket connections for CDP traffic
+3. Monitors both processes and exits if either crashes
 
-You can get full control by overriding the entrypoint using: `docker container run -it --rm --entrypoint "" ghcr.io/todd2982/alpine-chrome chromium-browser ...`
+> **Note for downstream images:** If you override `ENTRYPOINT` in your image, you will lose the CDP proxy. Override only if you don't need remote debugging on port 9222.
+
+You can pass extra Chrome flags via the `CHROMIUM_FLAGS` environment variable (appended to every Chrome invocation):
+
+```
+docker container run -it --rm --env CHROMIUM_FLAGS="--other-flag ..." ghcr.io/todd2982/alpine-chrome
+```
+
+You can get full control by overriding the entrypoint:
+
+```
+docker container run -it --rm --entrypoint "" ghcr.io/todd2982/alpine-chrome chromium-browser ...
+```
 
 ## Use the devtools
 
-Command (with no-sandbox): `docker container run -d -p 9222:9222 ghcr.io/todd2982/alpine-chrome --no-sandbox --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 https://www.chromestatus.com/`
+> **Security note:** Prefer `--cap-add=SYS_ADMIN` (or the seccomp profile) over `--no-sandbox`. See the [Security](#security) section.
+
+Command (with SYS_ADMIN): `docker container run -d -p 9222:9222 --cap-add=SYS_ADMIN ghcr.io/todd2982/alpine-chrome https://www.chromestatus.com/`
+
+The CDP proxy automatically rewrites WebSocket URLs, so CDP clients connecting to `localhost:9222` will get correct addresses.
 
 Open your browser to: `http://localhost:9222` and then click on the tab you want to inspect. Replace the beginning
 `https://chrome-devtools-frontend.appspot.com/serve_file/@.../inspector.html?ws=localhost:9222/[END]`

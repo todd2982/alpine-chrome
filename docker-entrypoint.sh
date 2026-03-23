@@ -4,9 +4,15 @@
 # Modern Chromium (v112+) ignores --remote-debugging-address and always binds
 # DevTools to 127.0.0.1 for security reasons. This script works around that by:
 #   1. Starting Chromium on an internal loopback port (9223)
-#   2. Using socat to forward 0.0.0.0:9222 → 127.0.0.1:9223
+#   2. Running cdp-proxy.py which listens on 0.0.0.0:9222 and:
+#      - Rewrites WebSocket URLs in /json and /json/version responses so
+#        CDP clients (e.g. Karakeep) receive usable addresses
+#      - Transparently proxies WebSocket connections for CDP traffic
 #
-# This allows other containers on the Docker network to reach Chrome via port 9222.
+# Environment variables:
+#   CHROME_INTERNAL_PORT  Internal port Chrome listens on (default: 9223)
+#   CHROME_EXTERNAL_PORT  External port the proxy exposes  (default: 9222)
+#   CHROMIUM_FLAGS        Extra flags appended to every Chrome invocation
 
 set -e
 
@@ -14,13 +20,14 @@ INTERNAL_PORT="${CHROME_INTERNAL_PORT:-9223}"
 EXTERNAL_PORT="${CHROME_EXTERNAL_PORT:-9222}"
 
 # Start chromium on the internal loopback port.
-# Pass all extra args through (entrypoint already includes --headless via CMD).
-chromium-browser "$@" --remote-debugging-port="$INTERNAL_PORT" &
+# $CHROMIUM_FLAGS lets users inject extra flags without overriding the CMD.
+# shellcheck disable=SC2086
+chromium-browser "$@" ${CHROMIUM_FLAGS} --remote-debugging-port="$INTERNAL_PORT" &
 CHROME_PID=$!
 
-# Ensure Chrome dies if socat exits, and vice versa
+# Kill both processes when we exit
 cleanup() {
-  kill "$CHROME_PID" 2>/dev/null || true
+  kill "$CHROME_PID" "$PROXY_PID" 2>/dev/null || true
 }
 trap cleanup EXIT TERM INT
 
@@ -40,7 +47,21 @@ until wget -q -O /dev/null "http://127.0.0.1:$INTERNAL_PORT/json/version" 2>/dev
   sleep 0.5
 done
 
-echo "[entrypoint] Chrome ready. Forwarding 0.0.0.0:$EXTERNAL_PORT -> 127.0.0.1:$INTERNAL_PORT"
+echo "[entrypoint] Chrome ready. Starting CDP proxy on 0.0.0.0:$EXTERNAL_PORT -> 127.0.0.1:$INTERNAL_PORT"
 
-# Forward external port to internal port so other containers can reach Chrome
-exec socat TCP-LISTEN:"$EXTERNAL_PORT",fork,bind=0.0.0.0,reuseaddr TCP:127.0.0.1:"$INTERNAL_PORT"
+# Start the CDP proxy (rewrites WS URLs in JSON responses)
+python3 /usr/local/bin/cdp-proxy.py &
+PROXY_PID=$!
+
+# Monitor both processes; restart container if either dies
+while true; do
+  if ! kill -0 "$CHROME_PID" 2>/dev/null; then
+    echo "[entrypoint] Chrome process died unexpectedly" >&2
+    exit 1
+  fi
+  if ! kill -0 "$PROXY_PID" 2>/dev/null; then
+    echo "[entrypoint] CDP proxy process died unexpectedly" >&2
+    exit 1
+  fi
+  sleep 5
+done
