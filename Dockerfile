@@ -43,7 +43,17 @@ ENV HOME=/tmp \
 #
 # Security: prefer --cap-add=SYS_ADMIN or a seccomp profile over --no-sandbox.
 # See README for usage examples.
-ENV CHROMIUM_FLAGS="--disable-software-rasterizer --disable-dev-shm-usage"
+# --no-sandbox is included by default because most Docker environments do not
+# grant the SYS_ADMIN capability or a permissive seccomp profile that Chrome's
+# sandbox requires. Operators who CAN grant SYS_ADMIN or supply a seccomp
+# profile should override this variable to remove --no-sandbox:
+#
+#   cap_add: [SYS_ADMIN]  →  set CHROMIUM_FLAGS without --no-sandbox
+#   --security-opt seccomp=chrome.json  →  same
+#
+# Using an env var (rather than baking it into CMD) lets operators override
+# with a single environment variable instead of replacing the entire command.
+ENV CHROMIUM_FLAGS="--no-sandbox --disable-software-rasterizer --disable-dev-shm-usage"
 EXPOSE 9222
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["--headless", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage", "--hide-scrollbars"]
+CMD ["--headless", "--disable-gpu", "--disable-dev-shm-usage", "--hide-scrollbars"]
