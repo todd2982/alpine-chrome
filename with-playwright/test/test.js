@@ -12,6 +12,7 @@ const { chromium } = require("playwright-chromium");
 (async () => {
   const browser = await chromium.launch({
     executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
     // 💡 This enables logs for the communication between Playwright and Chromium
     // logger: {
     //   isEnabled: (name, severity) => name === "browser" || "context",

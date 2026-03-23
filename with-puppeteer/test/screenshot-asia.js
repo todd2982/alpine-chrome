@@ -7,8 +7,9 @@ const puppeteer = require("puppeteer");
       "--headless",
       "--disable-gpu",
       "--disable-dev-shm-usage",
-      "--remote-debugging-port=9222",
-      "--remote-debugging-address=0.0.0.0"
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--remote-debugging-port=9222"
     ]
   });
   const page = await browser.newPage();
