@@ -34,18 +34,7 @@ services:
       - chrome
 ```
 
-Or with `--no-sandbox` if you can't grant `SYS_ADMIN`:
-
-```yaml
-services:
-  chrome:
-    image: ghcr.io/todd2982/alpine-chrome:latest
-    restart: unless-stopped
-    environment:
-      CHROMIUM_FLAGS: "--no-sandbox --disable-software-rasterizer --disable-dev-shm-usage"
-```
-
-> **Security note:** `--cap-add=SYS_ADMIN` (or a seccomp profile) is preferred over `--no-sandbox`. See [Security](#security) below.
+> **Default behavior:** The image ships with `--no-sandbox` enabled by default (via `CHROMIUM_FLAGS`) because most Docker environments do not grant `SYS_ADMIN` or a permissive seccomp profile. If you can provide either, override `CHROMIUM_FLAGS` to remove it — see [Security](#security) below.
 
 ---
 
@@ -67,11 +56,14 @@ This is necessary because Chromium v112+ ignores `--remote-debugging-address` an
 
 Chrome sandboxing requires special Docker configuration. Three options (best to worst):
 
+The image defaults to `--no-sandbox` so it works out of the box in standard Docker environments. To use a hardened configuration, override `CHROMIUM_FLAGS` to remove `--no-sandbox` and grant Chrome the sandbox it needs:
+
 ### ✅ Best: seccomp profile
 
 ```bash
 docker run -d -p 9222:9222 \
   --security-opt seccomp=$(pwd)/chrome.json \
+  -e CHROMIUM_FLAGS="--disable-software-rasterizer --disable-dev-shm-usage" \
   ghcr.io/todd2982/alpine-chrome
 ```
 
@@ -80,18 +72,19 @@ The [`chrome.json`](chrome.json) seccomp profile (from Jessie Frazelle) lets Chr
 ### ✅ Good: SYS_ADMIN capability
 
 ```bash
-docker run -d -p 9222:9222 --cap-add=SYS_ADMIN ghcr.io/todd2982/alpine-chrome
-```
-
-### ⚠️ Acceptable: no-sandbox
-
-```bash
 docker run -d -p 9222:9222 \
-  -e CHROMIUM_FLAGS="--no-sandbox --disable-software-rasterizer --disable-dev-shm-usage" \
+  --cap-add=SYS_ADMIN \
+  -e CHROMIUM_FLAGS="--disable-software-rasterizer --disable-dev-shm-usage" \
   ghcr.io/todd2982/alpine-chrome
 ```
 
-Only use `--no-sandbox` in trusted/isolated environments.
+### ⚠️ Default (no-sandbox)
+
+```bash
+docker run -d -p 9222:9222 ghcr.io/todd2982/alpine-chrome
+```
+
+Works in standard Docker environments without any extra capabilities. Only use in trusted/isolated environments where the container is the trust boundary.
 
 ---
 
@@ -101,16 +94,19 @@ Only use `--no-sandbox` in trusted/isolated environments.
 
 | Variable | Default | Description |
 |---|---|---|
-| `CHROMIUM_FLAGS` | `--disable-software-rasterizer --disable-dev-shm-usage` | Extra flags appended to every Chrome invocation |
+| `CHROMIUM_FLAGS` | `--no-sandbox --disable-software-rasterizer --disable-dev-shm-usage` | Extra flags appended to every Chrome invocation. Override to remove `--no-sandbox` when using `SYS_ADMIN` or a seccomp profile. |
 | `HOME` | `/tmp` | Required for Chromium to function |
 | `CHROME_BIN` | `/usr/bin/chromium-browser` | Path to Chrome binary |
 | `CHROME_PATH` | `/usr/lib/chromium/` | Chrome library path |
 
 ### Custom Chrome Flags
 
+Override `CHROMIUM_FLAGS` to customize Chrome startup flags. For example, to enable sandbox with `SYS_ADMIN`:
+
 ```bash
 docker run -d -p 9222:9222 \
-  -e CHROMIUM_FLAGS="--no-sandbox --disable-software-rasterizer --disable-dev-shm-usage" \
+  --cap-add=SYS_ADMIN \
+  -e CHROMIUM_FLAGS="--disable-software-rasterizer --disable-dev-shm-usage" \
   ghcr.io/todd2982/alpine-chrome
 ```
 
