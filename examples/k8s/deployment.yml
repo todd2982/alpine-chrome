@@ -15,12 +15,7 @@ spec:
         name: alpine-chrome
     spec:
       containers:
-      - args:
-        - --remote-debugging-address=0.0.0.0
-        - --remote-debugging-port=9222
-        - --headless
-        - --disable-gpu
-        image: ghcr.io/todd2982/alpine-chrome
+      - image: ghcr.io/todd2982/alpine-chrome
         livenessProbe:
           httpGet:
             path: /json

@@ -4,17 +4,11 @@ name: build-single-container
 description: Build and push a single Docker container image to ghcr.
 inputs:
   tag:
-    description: The tag and folder for the Docker image/Dockerfile.
+    description: The tag for the Docker image (e.g. "latest").
     required: true
-    type: string
-  base:
-    description: The parent image tag (optional).
-    required: true
-    type: string
   github_token:
     description: The GitHub token for authentication.
     required: true
-    type: string
 
 runs:
   using: "composite"
@@ -30,15 +24,6 @@ runs:
       with:
         driver: docker
 
-    - name: Set folder
-      run: |
-        if [[ "${{ inputs.tag }}" == "latest" ]]; then
-          echo "folder=." >> $GITHUB_ENV
-        else
-          echo "folder=${{ inputs.tag }}" >> $GITHUB_ENV
-        fi
-      shell: bash
-
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
@@ -52,7 +37,7 @@ runs:
     - name: Build Docker image
       uses: docker/build-push-action@v5
       with:
-        context: ${{ env.folder }}
+        context: .
         load: true
         labels: ${{ steps.meta.outputs.labels }}
         tags: todd2982/alpine-chrome:${{ inputs.tag }}
@@ -60,8 +45,7 @@ runs:
     - name: Test
       env:
         IMAGE_NAME: todd2982/alpine-chrome:${{ inputs.tag }}
-      run: |
-        ${{ env.folder }}/test.sh
+      run: ./test.sh
       shell: bash
 
     - name: Compute versioned tag
@@ -69,7 +53,6 @@ runs:
       env:
         IMAGE_NAME: todd2982/alpine-chrome:${{ inputs.tag }}
         CHROMIUM_VERSION_REGEXP: 'Chromium ([0-9]+)\.'
-        CHROMEDRIVER_VERSION_REGEXP: 'ChromeDriver ([0-9]+)\.'
       run: |
         CURRENT_CHROMIUM_VERSION=$(docker container run --rm --entrypoint '' ${IMAGE_NAME} chromium-browser --version)
         if [[ ${CURRENT_CHROMIUM_VERSION} =~ ${CHROMIUM_VERSION_REGEXP} ]]; then
@@ -78,27 +61,8 @@ runs:
           echo "❌ Cannot extract Chromium major version from '${CURRENT_CHROMIUM_VERSION}'" >&2
           exit 1
         fi
-        CHROMIUM_VERSION=${BASH_REMATCH[1]}
-        TAG=${CHROMIUM_VERSION}
-        if [[ '${{ env.folder }}' != '.' ]]; then
-          TAG=${TAG}-${{ inputs.tag }}
-        fi
-        if [[ '${{ env.folder }}' == 'with-chromedriver' ]]; then
-          CURRENT_CHROMEDRIVER_VERSION=$(docker container run --rm --entrypoint "" ${IMAGE_NAME} chromedriver --version)
-          if [[ ${CURRENT_CHROMEDRIVER_VERSION} =~ ${CHROMEDRIVER_VERSION_REGEXP} ]]; then
-            CHROMEDRIVER_MAJOR_VERSION=${BASH_REMATCH[1]}
-          fi
-          if [ "${CHROMIUM_VERSION}" != "${CHROMEDRIVER_MAJOR_VERSION}" ]; then
-              echo "Skipping image pushing because of incompatible chromium (${CHROMIUM_VERSION}) and chromedriver (${CHROMEDRIVER_MAJOR_VERSION}) versions" >&2
-              exit 1
-          fi
-        elif [[ '${{ env.folder }}' == 'with-selenoid' ]]; then
-          CURRENT_SELENOID_VERSION=$(docker container run --rm --entrypoint "" ${IMAGE_NAME} selenoid -version)
-          TAG=${TAG}-${CURRENT_SELENOID_VERSION:14:4}
-        fi
-        echo "value=${TAG}" >> $GITHUB_OUTPUT
+        echo "value=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
       shell: bash
-
 
     - name: Login to GitHub Container registry
       if: ${{ github.ref == 'refs/heads/master' }}
@@ -121,7 +85,7 @@ runs:
         IMAGE_VERSIONED_NAME: alpine-chrome:${{ steps.tag.outputs.value }}
       uses: docker/build-push-action@v5
       with:
-        context: ${{ env.folder }}
+        context: .
         platforms: linux/amd64,linux/arm64
         labels: ${{ steps.meta.outputs.labels }}
         tags: |

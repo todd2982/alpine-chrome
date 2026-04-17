@@ -50,7 +50,7 @@ Chrome sandboxing requires special Docker config. Three options (best to worst):
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `CHROMIUM_FLAGS` | `--disable-software-rasterizer --disable-dev-shm-usage` | Extra flags for Chrome |
+| `CHROMIUM_FLAGS` | `--no-sandbox --disable-software-rasterizer --disable-dev-shm-usage` | Extra flags for Chrome. `--no-sandbox` is on by default so the image works without `SYS_ADMIN`/seccomp; override to remove it in hardened setups. |
 | `HOME` | `/tmp` | Required for Chromium |
 | `CHROME_BIN` | `/usr/bin/chromium-browser` | Chrome binary path |
 | `CHROME_PATH` | `/usr/lib/chromium/` | Chrome library path |
@@ -61,13 +61,12 @@ Chrome sandboxing requires special Docker config. Three options (best to worst):
 - `docker-entrypoint.sh`: Process supervisor — starts Chrome + CDP proxy
 - `cdp-proxy.py`: CDP proxy that rewrites WebSocket URLs for external accessibility
 - `chrome.json`: Seccomp security profile for Chrome
-- `local.conf`: Font config for emoji/international character rendering
 - `test.sh`: Validates the image works
-- `.github/actions/build-single-container/action.yml`: Reusable build/test/push action
+- `.github/actions/build-single-container/action.yml`: Build/test/push action used by the CI workflow
 
 ## What This Is NOT
 
-- Not a multi-variant project (`with-node`, `with-puppeteer`, `with-playwright`, etc. directories exist in the repo history but are not built or maintained)
+- Not a multi-variant project — the upstream `jlandure/alpine-chrome` layered variants (`with-node`, `with-puppeteer`, `with-playwright`, `with-chromedriver`, `with-selenoid`, etc.) are not present in this fork and exist only in git history prior to their removal
 - Not a general-purpose headless Chrome for Puppeteer/Playwright/Selenium workflows
 - Not intended to replace the original `jlandure/alpine-chrome` project
 
