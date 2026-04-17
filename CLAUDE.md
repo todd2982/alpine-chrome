@@ -67,7 +67,7 @@ Chrome sandboxing requires special Docker config. Three options (best to worst):
 
 ## What This Is NOT
 
-- Not a multi-variant project (`with-node`, `with-puppeteer`, `with-playwright`, etc. directories exist in the repo history but are not built or maintained)
+- Not a multi-variant project — the upstream `jlandure/alpine-chrome` layered variants (`with-node`, `with-puppeteer`, `with-playwright`, `with-chromedriver`, `with-selenoid`, etc.) are not present in this fork and exist only in git history prior to their removal
 - Not a general-purpose headless Chrome for Puppeteer/Playwright/Selenium workflows
 - Not intended to replace the original `jlandure/alpine-chrome` project
 
