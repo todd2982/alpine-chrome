@@ -1,4 +1,4 @@
-FROM alpine:3.23
+FROM alpine:3.24
 
 # Installs Chromium and a minimal set of dependencies.
 # A Python CDP proxy (cdp-proxy.py) is used to expose 0.0.0.0:9222 -> 127.0.0.1:9223
